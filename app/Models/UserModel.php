@@ -16,7 +16,7 @@ class UserModel extends Model
             return false;
         }
      
-        unset($user['password'], $user['admin'], $user['totalSpending']);
+        unset($user['password']);
         return $user;
     }
 
