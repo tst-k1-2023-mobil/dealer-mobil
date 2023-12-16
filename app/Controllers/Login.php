@@ -40,6 +40,6 @@ class Login extends BaseController
     public function logout()
     {
         $this->session->remove('user');
-        return redirect()->to('/');
+        return redirect()->to('/login');
     }
 }

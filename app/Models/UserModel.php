@@ -16,7 +16,7 @@ class UserModel extends Model
             return false;
         }
      
-        unset($user['password'], $user['admin'], $user['totalSpending']);
+        unset($user['password']);
         return $user;
     }
 
@@ -30,5 +30,10 @@ class UserModel extends Model
             'loyalitasId' => 1,
             'totalSpending' => 0
         ]);
+    }
+
+    public function getUserById($id)
+    {
+        return $this->where(['id' => $id])->first();
     }
 }
