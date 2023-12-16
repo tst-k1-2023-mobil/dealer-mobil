@@ -19,6 +19,6 @@ class Pemesanan extends Model{
     }
 
     public function getDataPemesanan(){
-        return $this->findAll();
+        return $this->orderBy('tglPesan', 'DESC')->findAll();
     }
 }

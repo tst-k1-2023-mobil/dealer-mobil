@@ -21,4 +21,6 @@ $routes->get('/pesan', 'Pesan::index');
 
 $routes->get('/loyalty', 'Loyalty::index');
 
+$routes->get('/transaksi', 'Pesan::transaksi');
+
 

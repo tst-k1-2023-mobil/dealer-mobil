@@ -31,4 +31,9 @@ class UserModel extends Model
             'totalSpending' => 0
         ]);
     }
+
+    public function getUserById($id)
+    {
+        return $this->where(['id' => $id])->first();
+    }
 }
