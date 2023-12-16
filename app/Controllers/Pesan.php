@@ -1,11 +1,13 @@
 <?php
 
 namespace App\Controllers;
-use  App\Controllers\PemesananAPI;
+use App\Models\Pemesanan;
+use CodeIgniter\HTTP\Response;
 
 
 class Pesan extends BaseController
-{
+{   
+
     public function index(): string
     {
         return view('pemesanan');
@@ -39,7 +41,18 @@ class Pesan extends BaseController
         $tangggalPesan = date('Y-m-d');
         $tanggalKirim = $tangggalPesan;  
         
-        $pemesanan->insert($idAkun,$mobilId,$tangggalPesan,$tanggalKirim,$jumlahMobil,$totalHarga) ;
+        $this->insert($idAkun,$mobilId,$tangggalPesan,$tanggalKirim,$jumlahMobil,$totalHarga) ;
         return  redirect()->to('/listmobil'); 
+    }
+
+    public function insert($idAkun,$mobilId,$tangggalPesan,$tanggalKirim,$jumlahMobil,$totalHarga){
+        $model = model(Pemesanan::class);
+        $response = service('response');
+        $data = $model->insertPesanan($idAkun,$mobilId,$tangggalPesan,$tanggalKirim,$jumlahMobil,$totalHarga);
+        if ($data) {
+            return $response->setStatusCode(200)->setJSON(['success' => true, 'message' => 'Data inserted successfully', 'data' => $data]);
+        } else {
+            return $response->setStatusCode(400)->setJSON(['success' => false, 'message' => 'Failed to insert data']);
+        }
     }
 }
