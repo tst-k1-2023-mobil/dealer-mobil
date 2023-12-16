@@ -3,7 +3,7 @@
 <?= $this->section('content'); ?>
 
 <div class="lg:flex lg:items-center lg:justify-between min-w-0 ml-3">
-  <b class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">LIST MOBIL</b>
+  <b class="text-8xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">LIST MOBIL</b>
 </div>
 <div class = "flex flex row">
 <?php foreach($mobil as $m) : ?>
@@ -28,6 +28,11 @@
                     <p class="mt-1 text-xs leading-5 text-gray-900"><?= $m['stok']?></p>
                     <p class="mt-1 text-xs leading-5 text-gray-900"><?= $m['waktuProduksi'] ?> hari </p>
                     <p class="mt-1 text-xs leading-5 text-gray-900"><?= $m['harga']?> </p>
+                    <form method="POST" action="/listmobil">
+                        <input type="hidden" value=<?= $m['id']?> name="id">
+                    <button class="mt-2 bg-[#262626] rounded p-1 w-full text-white w-32" type="submit">PESAN </button>
+                    </form>
+
                 </div>
             </li>
         </ul>
@@ -36,4 +41,3 @@
 </div>
 
 <?= $this->endSection(); ?>
-</ul>

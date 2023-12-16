@@ -6,7 +6,7 @@ class Listmobil extends BaseController
 {
     public function index(): string
     {
-        $curl = curl_init('http://localhost:8080//api/mobil');
+        $curl = curl_init('http://localhost:8081//api/mobil');
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($curl);
         curl_close($curl);
@@ -14,5 +14,12 @@ class Listmobil extends BaseController
             'mobil' => json_decode($response,true)
         ];
         return view('listmobil',$data);
+    }
+
+    public function detailPesanan(): \CodeIgniter\HTTP\RedirectResponse 
+    {
+        $request = service('request');
+        $id = $request->getPost('id');
+        return redirect()->to('/pesan/' . $id);
     }
 }
