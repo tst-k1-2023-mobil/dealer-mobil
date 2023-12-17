@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Pemesanan;
 use App\Models\UserModel;
- use APP\Models\Loyalitas;
+use App\Models\Loyalitas;
 
 use CodeIgniter\HTTP\Response;
 
@@ -19,7 +19,7 @@ class Pesan extends BaseController
 
     public function index(): string
     {
-        return view('pemesanan');
+        return view('pesan');
     }
 
     public function formPemesanan($id): string
@@ -39,8 +39,9 @@ class Pesan extends BaseController
 
     public function pesan(): \CodeIgniter\HTTP\RedirectResponse
     {
-        $usermodel = model(UserModel::class);
         $loyalitasmodel = model(Loyalitas::class);
+        $usermodel = model(UserModel::class);
+        
         $request = service('request');
         $idAkun = $this->session->get('user')['id'];    
         $mobilId = $request->getPost('id');
@@ -72,6 +73,10 @@ class Pesan extends BaseController
             'Authorization: Bearer ' . getenv('api.key')
         ]);
         $response = curl_exec($curl);
+        $tanggalKirim = json_decode($response)->tanggalKirim;
+        $user= $usermodel->getUserById($idAkun);
+        $diskon = $loyalitasmodel->getDiskon((int)$user['loyalitasId']);
+        $totalHarga = $totalHarga * (1-floatval($diskon));
 
         $this->insert($idAkun, $mobilId, $tanggalPesan, $tanggalKirim, $jumlahMobil, $totalHarga);
         return redirect()->to('/');
