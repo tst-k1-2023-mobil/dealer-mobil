@@ -20,6 +20,11 @@ class UserModel extends Model
         return $user;
     }
 
+    public function getUserById($id){
+        return  $this->where(['id'=> $id])->first();
+    }
+
+
     public function createUser($nama, $email, $password)
     {
         $this->save([
@@ -30,10 +35,5 @@ class UserModel extends Model
             'loyalitasId' => 1,
             'totalSpending' => 0
         ]);
-    }
-
-    public function getUserById($id)
-    {
-        return $this->where(['id' => $id])->first();
     }
 }
