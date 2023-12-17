@@ -18,7 +18,11 @@ class Pemesanan extends Model{
         return $this->insert($data);
     }
 
-    public function getDataPemesanan(){
-        return $this->orderBy('tglPesan', 'DESC')->findAll();
+    public function getDataPemesanan($id = null){
+        if($id == null){
+            return $this->findAll();
+        }else{
+            return $this->where(['userId' => $id])->findAll();
+        }
     }
 }

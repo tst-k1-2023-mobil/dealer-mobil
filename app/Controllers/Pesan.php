@@ -83,7 +83,13 @@ class Pesan extends BaseController
         $model = model(Pemesanan::class);
         $user = model(UserModel::class);
 
-        $transaksiData = $model->getDataPemesanan();
+        $id = $this->session->get('user')['id'];
+        
+        if ($this->session->get('user')['admin'] == 1) {
+            $transaksiData = $model->getDataPemesanan();
+        } else {
+            $transaksiData = $model->getDataPemesanan($id);
+        }
 
         $mobilDetails = [];
 

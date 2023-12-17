@@ -12,13 +12,12 @@
                         List Mobil
                     </a>
                 </li>
-                <?php if ($role == 1) : ?>
-                    <li>
-                        <a href="/transaksi" class="<?= current_url(true)->getSegment(1) == 'transaksi' ? 'text-[#262626] underline' : 'text-gray-400' ?>">
-                            Transaksi
-                        </a>
-                    </li>
-                <?php elseif ($role == 0) : ?>
+                <li>
+                    <a href="/transaksi" class="<?= current_url(true)->getSegment(1) == 'transaksi' ? 'text-[#262626] underline' : 'text-gray-400' ?>">
+                        Transaksi
+                    </a>
+                </li>
+                <?php if ($role == 0) : ?>
                     <li>
                         <a href="/pesan" class="<?= current_url(true)->getSegment(1) == 'pesan' ? 'text-[#262626] underline' : 'text-gray-400' ?>">
                             Pesan
