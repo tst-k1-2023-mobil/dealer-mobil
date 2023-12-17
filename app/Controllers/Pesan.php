@@ -39,25 +39,50 @@ class Pesan extends BaseController
     public function pesan(): \CodeIgniter\HTTP\RedirectResponse
     {
         $request = service('request');
-        $idAkun = $request->getPost('idAkun');
+        $idAkun = $this->session->get('user')['id'];    
         $mobilId = $request->getPost('id');
         $jumlahMobil = $request->getPost('jumlahPesanan');
         $harga = $request->getPost('harga');
+        $stok = $request->getPost('stok');
         $waktuProduksi =  $request->getPost('waktuProduksi');
-        $penambahanWaktu = '+' . $waktuProduksi . ' day';
+        if($waktuProduksi > 1){
+            $penambahanWaktu = $waktuProduksi . ' days';
+            $penambahanWaktu = date_create($penambahanWaktu);
+        } else{
+            $penambahanWaktu = $waktuProduksi . ' day';
+            $penambahanWaktu = date_create($penambahanWaktu);
+        }
         $totalHarga = $harga * $jumlahMobil;
-        $tangggalPesan = date('Y-m-d');
-        $tanggalKirim = $tangggalPesan;
+        $tanggalPesan = date('Y-m-d');
+        $tanggalKirim = $tanggalPesan;
+        $stokSekarang = $stok - $jumlahMobil;
+        if($jumlahMobil > $stok){
+            $tanggalKirim = date_add(date_create($tanggalPesan),date_interval_create_from_date_string($waktuProduksi . ' days'));
+            $tanggalKirim = date_format($tanggalKirim,'Y-m-d');
+            $stokSekarang = 0;
+        }
 
-        $this->insert($idAkun, $mobilId, $tangggalPesan, $tanggalKirim, $jumlahMobil, $totalHarga);
-        return redirect()->to('/listmobil');
+        $curl = curl_init(getenv('api.pabrik.key') . '/api/order' . $mobilId);
+        $data = [
+            'idMobil' => $mobilId,
+            'jumlah' => $jumlahMobil,
+            'stok' => $stok,
+            'stokSekarang' => $stokSekarang
+        ];
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($curl);
+        
+        $this->insert($idAkun, $mobilId, $tanggalPesan, $tanggalKirim, $jumlahMobil, $totalHarga);
+        return redirect()->to('/');
     }
 
-    public function insert($idAkun, $mobilId, $tangggalPesan, $tanggalKirim, $jumlahMobil, $totalHarga)
+    public function insert($idAkun, $mobilId, $tanggalPesan, $tanggalKirim, $jumlahMobil, $totalHarga)
     {
         $model = model(Pemesanan::class);
         $response = service('response');
-        $data = $model->insertPesanan($idAkun, $mobilId, $tangggalPesan, $tanggalKirim, $jumlahMobil, $totalHarga);
+        $data = $model->insertPesanan($idAkun, $mobilId, $tanggalPesan, $tanggalKirim, $jumlahMobil, $totalHarga);
         if ($data) {
             return $response->setStatusCode(200)->setJSON(['success' => true, 'message' => 'Data inserted successfully', 'data' => $data]);
         } else {
