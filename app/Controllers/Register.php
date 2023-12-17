@@ -6,6 +6,10 @@ class Register extends BaseController
 {
     public function index(): string
     {
+        if ($this->session->get('user')) {
+            return redirect()->to('/');
+        }
+
         $data = [
             'title' => 'Register',
             'validation' => \Config\Services::validation()
@@ -16,6 +20,10 @@ class Register extends BaseController
 
     public function auth()
     {
+        if ($this->session->get('user')) {
+            return redirect()->to('/');
+        }
+
         if (!$this->validate([
             'nama' => 'required',
             'email' => 'required|valid_email|is_unique[user.email]',

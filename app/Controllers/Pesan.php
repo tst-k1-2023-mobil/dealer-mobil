@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Pemesanan;
 use App\Models\UserModel;
- use APP\Models\Loyalitas;
+use APP\Models\Loyalitas;
 
 use CodeIgniter\HTTP\Response;
 
@@ -17,13 +17,21 @@ class Pesan extends BaseController
         $this->pemesananMobilService = new PemesananMobilService();
     }
 
-    public function index(): string
+    public function index()
     {
-        return view('pemesanan');
+        if (!$this->session->get('user')) {
+            return redirect()->to('/login');
+        }
+
+        return redirect()->to("/");
     }
 
     public function formPemesanan($id): string
     {
+        if (!$this->session->get('user')) {
+            return redirect()->to('/login');
+        }
+
         $curl = curl_init(getenv('api.pabrik.key') . 'api/mobil/' . $id);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_HTTPHEADER, [
@@ -31,6 +39,7 @@ class Pesan extends BaseController
         ]);
         $response = curl_exec($curl);
         curl_close($curl);
+        
         $data = [
             'mobil' => json_decode($response, true)
         ];
@@ -39,14 +48,16 @@ class Pesan extends BaseController
 
     public function pesan(): \CodeIgniter\HTTP\RedirectResponse
     {
-        $usermodel = model(UserModel::class);
-        $loyalitasmodel = model(Loyalitas::class);
+        if (!$this->session->get('user')) {
+            return redirect()->to('/login');
+        }
+
         $request = service('request');
         $idAkun = $this->session->get('user')['id'];    
         $mobilId = $request->getPost('id');
         $jumlahMobil = $request->getPost('jumlahPesanan');
         $harga = $request->getPost('harga');
-        $stok = $request->getPost('stok');
+        
         $waktuProduksi =  $request->getPost('waktuProduksi');
         if($waktuProduksi > 1){
             $penambahanWaktu = $waktuProduksi . ' days';
@@ -58,7 +69,6 @@ class Pesan extends BaseController
         $totalHarga = $harga * $jumlahMobil;
         $tanggalPesan = date('Y-m-d');
         $tanggalKirim = $tanggalPesan;
-        $stokSekarang = $stok - $jumlahMobil;
 
         $curl = curl_init(getenv('api.pabrik.key') . '/api/order');
         $data = [
@@ -79,6 +89,10 @@ class Pesan extends BaseController
 
     public function insert($idAkun, $mobilId, $tanggalPesan, $tanggalKirim, $jumlahMobil, $totalHarga)
     {
+        if (!$this->session->get('user')) {
+            return redirect()->to('/login');
+        }
+
         $model = model(Pemesanan::class);
         $response = service('response');
         $data = $model->insertPesanan($idAkun, $mobilId, $tanggalPesan, $tanggalKirim, $jumlahMobil, $totalHarga);

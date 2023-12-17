@@ -6,6 +6,10 @@ class Login extends BaseController
 {
     public function index(): string
     {
+        if ($this->session->get('user')) {
+            return redirect()->to('/');
+        }
+
         $data = [
             'title' => 'Login',
             'validation' => \Config\Services::validation()
@@ -15,6 +19,10 @@ class Login extends BaseController
 
     public function auth()
     {
+        if ($this->session->get('user')) {
+            return redirect()->to('/');
+        }
+
         if (!$this->validate([
             'email' => 'required|valid_email',
             'password' => 'required'
@@ -39,6 +47,10 @@ class Login extends BaseController
 
     public function logout()
     {
+        if (!$this->session->get('user')) {
+            return redirect()->to('/login');
+        }
+
         $this->session->remove('user');
         return redirect()->to('/login');
     }

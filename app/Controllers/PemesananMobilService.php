@@ -14,7 +14,6 @@ class PemesananMobilService {
 
     public function getMobilById($id)
     {
-        // Call the method from Listmobil controller
         return $this->listMobilController->getDataMobil($id);
     }
 }
