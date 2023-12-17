@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Pemesanan;
 use App\Models\UserModel;
+ use APP\Models\Loyalitas;
 
 use CodeIgniter\HTTP\Response;
 
@@ -38,6 +39,8 @@ class Pesan extends BaseController
 
     public function pesan(): \CodeIgniter\HTTP\RedirectResponse
     {
+        $usermodel = model(UserModel::class);
+        $loyalitasmodel = model(Loyalitas::class);
         $request = service('request');
         $idAkun = $this->session->get('user')['id'];    
         $mobilId = $request->getPost('id');
@@ -56,24 +59,20 @@ class Pesan extends BaseController
         $tanggalPesan = date('Y-m-d');
         $tanggalKirim = $tanggalPesan;
         $stokSekarang = $stok - $jumlahMobil;
-        if($jumlahMobil > $stok){
-            $tanggalKirim = date_add(date_create($tanggalPesan),date_interval_create_from_date_string($waktuProduksi . ' days'));
-            $tanggalKirim = date_format($tanggalKirim,'Y-m-d');
-            $stokSekarang = 0;
-        }
 
-        $curl = curl_init(getenv('api.pabrik.key') . '/api/order' . $mobilId);
+        $curl = curl_init(getenv('api.pabrik.key') . '/api/order');
         $data = [
-            'idMobil' => $mobilId,
+            'mobilId' => $mobilId,
             'jumlah' => $jumlahMobil,
-            'stok' => $stok,
-            'stokSekarang' => $stokSekarang
         ];
         curl_setopt($curl, CURLOPT_POST, 1);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+            'Authorization: Bearer ' . getenv('api.key')
+        ]);
         $response = curl_exec($curl);
-        
+
         $this->insert($idAkun, $mobilId, $tanggalPesan, $tanggalKirim, $jumlahMobil, $totalHarga);
         return redirect()->to('/');
     }
