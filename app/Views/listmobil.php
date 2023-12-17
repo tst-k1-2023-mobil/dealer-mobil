@@ -4,6 +4,11 @@
 
 <div class="px-20">
     <b class="font-bold leading-10 text-gray-900 text-4xl tracking-tight mb-4">List Mobil</b>
+    <?php if (session()->has('error')) : ?>
+        <div class="w-full bg-red-500 rounded-md py-4 px-4 text-xl text-white font-semibold mt-4">
+            <?= session('error') ?>
+        </div>
+    <?php endif; ?>
     <div class="flex flex-row">
         <?php foreach ($mobil as $m) : ?>
             <div class="relative flex flex-col text-gray-700 bg-white shadow-xl w-96 rounded-xl bg-clip-border">
@@ -26,7 +31,14 @@
                             <p class="mt-1 truncate text-xs leading-5 text-gray-900"><?= $m['spesifikasi'] ?></p>
                             <p class="mt-1 text-xs leading-5 text-gray-900"><?= $m['stok'] ?></p>
                             <p class="mt-1 text-xs leading-5 text-gray-900"><?= $m['waktuProduksi'] ?> hari </p>
-                            <p class="mt-1 text-xs leading-5 text-gray-900">Rp<?= number_format($m['harga'], 0, ',', '.') ?> </p>
+                            <?php if ($role == '0') : ?>
+                            <div class="flex gap-2">
+                                <p class="mt-1 text-xs leading-5 text-gray-400 line-through decoration-gray-900">Rp<?= number_format($m['harga'], 0, ',', '.') ?></p>
+                                <p class="mt-1 text-xs leading-5 text-gray-900">Rp<?= number_format($m['harga'] * (1 - $diskon), 0, ',', '.') ?></p>
+                            </div>
+                            <?php else : ?>
+                                <p class="mt-1 text-xs leading-5 text-gray-900">Rp<?= number_format($m['harga'], 0, ',', '.') ?></p>
+                            <?php endif; ?>
                             <?php if ($role == '0') : ?>
                                 <form method="POST" action="/listmobil">
                                     <input type="hidden" value=<?= $m['id'] ?> name="id">

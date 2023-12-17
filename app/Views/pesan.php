@@ -24,7 +24,10 @@
               <p class="mt-1 truncate text-l leading-5 text-gray-900"><?= $mobil['spesifikasi'] ?></p>
               <p class="mt-1 text-l leading-5 text-gray-900"><?= $mobil['stok'] ?></p>
               <p class="mt-1 text-l leading-5 text-gray-900"><?= $mobil['waktuProduksi'] ?> hari </p>
-              <p class="mt-1 text-l leading-5 text-gray-900">Rp<?= number_format($mobil['harga'], 0, ',', '.') ?>,-</p>
+              <div class="flex gap-2">
+                <p class="mt-1 text-l leading-5 text-gray-400 line-through decoration-gray-900">Rp<?= number_format($mobil['harga'], 0, ',', '.') ?></p>
+                <p class="mt-1 text-l leading-5 text-gray-900">Rp<?= number_format($mobil['harga'] * (1 - $diskon), 0, ',', '.') ?></p>
+              </div>
             </div>
           </div>
         </div>

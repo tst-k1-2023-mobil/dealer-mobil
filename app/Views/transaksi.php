@@ -7,7 +7,7 @@
     <div class="w-full border-2 divide-y divide-gray-500 shadow-xl rounded-xl bg-clip-border mt-4">
         <?php if (!empty($transaksi)) : ?>
             <?php foreach ($transaksi as $t) : ?>
-                <div class="flex justify-between items-center p-4">
+                <div class="flex justify-between items-center p-4 pr-10">
                     <div>
                         <p class="text-xl font-bold"><?= $t['userNama'] ?> - <?= $t['mobilNama'] ?></p>
                         <p class="text-md">Tanggal Pesan : <?= formatDate($t['tglPesan']) ?></p>
@@ -16,7 +16,12 @@
                         <p class="text-md">Total Harga : Rp <?= number_format($t['totalHarga'], 0, ',', '.') ?></p>
                     </div>
                     <div>
-                        <p class="text-md"><?= $t['jumlah'] ?></p>
+                        <?php
+                        $tglKirim = new DateTime($t['tglKirim']);
+                        $currentDate = new DateTime(date('Y-m-d'));
+                        $status = ($currentDate >= $tglKirim) ? 'Done' : 'Produksi';
+                        ?>
+                        <p class="text-md font-bold"><?= $status ?></p>
                     </div>
                 </div>
             <?php endforeach; ?>

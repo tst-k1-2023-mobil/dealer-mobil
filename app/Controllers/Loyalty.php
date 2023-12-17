@@ -2,17 +2,25 @@
 
 namespace App\Controllers;
 
+use App\Models\UserModel;
+
 class Loyalty extends BaseController
 {
-    public function index(): string
+    public function index()
     {
         if (!$this->session->get('user')) {
             return redirect()->to('/login');
         }
+        
+        if ($this->session->get('user')['admin'] == 1) {
+            return redirect()->to('/');
+        }
 
-        $spending = $this->session->get('user')['totalSpending'];
+        $usermodel = model(UserModel::class);
+        $spending = $usermodel->getSpendingUser($this->session->get('user')['id']);
+        
         $data = [
-            'spending' => $spending
+            'spending' => $spending['totalSpending']
         ];
         return view('loyalty', $data);
     }

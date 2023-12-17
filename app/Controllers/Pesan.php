@@ -17,10 +17,26 @@ class Pesan extends BaseController
         $this->pemesananMobilService = new PemesananMobilService();
     }
 
-    public function formPemesanan($id): string
+    public function index() {
+        if (!$this->session->get('user')) {
+            return redirect()->to('/login');
+        }
+
+        if($this->session->get('user')['admin'] == 1){
+            return redirect()->to('/');
+        }
+
+        return redirect()->to('/')->with('error', 'Pilih mobil yang ingin Anda pesan terlebih dahulu!');
+    }
+
+    public function formPemesanan($id)
     {
         if (!$this->session->get('user')) {
             return redirect()->to('/login');
+        }
+
+        if($this->session->get('user')['admin'] == 1){
+            return redirect()->to('/');
         }
 
         $curl = curl_init(getenv('api.pabrik.key') . 'api/mobil/' . $id);
@@ -31,9 +47,14 @@ class Pesan extends BaseController
         $response = curl_exec($curl);
         curl_close($curl);
         
+        $loyalitasmodel = model(Loyalitas::class);
+        $usermodel = model(UserModel::class);
+
         $data = [
-            'mobil' => json_decode($response, true)
+            'mobil' => json_decode($response, true),
+            'diskon' => $loyalitasmodel->getDiskon($usermodel->getLoyalty($this->session->get('user')['id'])['loyalitasId'])
         ];
+
         return view('pesan', $data);
     }
 
@@ -64,11 +85,12 @@ class Pesan extends BaseController
         $tanggalPesan = date('Y-m-d');
         $tanggalKirim = $tanggalPesan;
 
-        $curl = curl_init(getenv('api.pabrik.key') . '/api/order');
         $data = [
             'mobilId' => $mobilId,
             'jumlah' => $jumlahMobil,
         ];
+
+        $curl = curl_init(getenv('api.pabrik.key') . '/api/order');
         curl_setopt($curl, CURLOPT_POST, 1);
         curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -76,7 +98,12 @@ class Pesan extends BaseController
             'Authorization: Bearer ' . getenv('api.key')
         ]);
         $response = curl_exec($curl);
-        $tanggalKirim = json_decode($response)->tanggalKirim;
+        
+        if(json_decode($response)->backOrder){
+            $tanggalKirim = json_decode($response)->tanggalKirim;
+        } else{
+            $tanggalKirim = $tanggalPesan;
+        }
         $user= $usermodel->getUserById($idAkun);
         $diskon = $loyalitasmodel->getDiskon((int)$user['loyalitasId']);
         $totalHarga = $totalHarga * (1-floatval($diskon));

@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Controllers;
-use App\Models\Pemesanan;
+use App\Models\Loyalitas;
+use App\Models\UserModel;
 
 class Listmobil extends BaseController
 {
@@ -14,9 +15,16 @@ class Listmobil extends BaseController
         $response = $this->getDataMobil();
         
         $role = $this->session->get('user')['admin'];
+
+        $usermodel = model(UserModel::class);
+        $loyalitasmodel = model(Loyalitas::class);
+
+        $diskon = $loyalitasmodel->getDiskon($usermodel->getLoyalty($this->session->get('user')['id'])['loyalitasId']);
+    
         $data = [
             'mobil' => $response,
-            'role' => $role
+            'role' => $role,
+            'diskon' => $diskon
         ];
         return view('listmobil', $data);
     }
@@ -34,10 +42,6 @@ class Listmobil extends BaseController
 
     public function getDataMobil($id = null)
     {
-        if (!$this->session->get('user')) {
-            return redirect()->to('/login');
-        }
-
         $curl = curl_init(($id) ? getenv('api.pabrik.key') . 'api/mobil/' . $id : getenv('api.pabrik.key') . 'api/mobil');
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_HTTPHEADER, [

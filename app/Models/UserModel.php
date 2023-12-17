@@ -15,15 +15,15 @@ class UserModel extends Model
         if (!$user || !password_verify($password, $user['password'])) {
             return false;
         }
-     
-        unset($user['password']);
+
+        unset($user['password'], $user['loyalitasId'], $user['totalSpending']);
         return $user;
     }
 
-    public function getUserById($id){
-        return  $this->where(['id'=> $id])->first();
+    public function getUserById($id)
+    {
+        return  $this->where(['id' => $id])->first();
     }
-
 
     public function createUser($nama, $email, $password)
     {
@@ -35,5 +35,15 @@ class UserModel extends Model
             'loyalitasId' => 1,
             'totalSpending' => 0
         ]);
+    }
+
+    public function getLoyalty($id)
+    {
+        return $this->select('loyalitasId')->where(['id' => $id])->first();
+    }
+
+    public function getSpendingUser($id)
+    {
+        return $this->select('totalSpending')->where(['id' => $id])->first();
     }
 }

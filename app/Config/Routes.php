@@ -17,6 +17,7 @@ $routes->post('/listmobil', 'Listmobil::detailPesanan');
 
 $routes->get('/pesan/(:segment)', 'Pesan::formPemesanan/$1');
 $routes->post('/pesan', 'Pesan::pesan');
+$routes->get('/pesan', 'Pesan::index');
 
 $routes->get('/loyalty', 'Loyalty::index');
 
