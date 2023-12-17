@@ -9,7 +9,7 @@
         <div class="border-b border-gray-900/10 pb-12">
             <h2 class="text-xl font-semibold leading-7 text-gray-900">Detail Mobil </h2>
             <div class="flex  justify-between gap-x-6 py-5">
-                <div class="flex row min-w-0 gap-x-4">
+                <div class="flex flex row min-w-0 gap-x-4">
                     <div class="min-w-0 flex-auto">
                         <p class="text-l font-semibold leading-6 text-gray-900"> <?= $mobil['nama']?></p>
                         <p class="text-l leading-6 text-gray-900">Tipe</p>
@@ -28,17 +28,6 @@
                     </div>
                 </div>
             </div>
-
-        <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-            <div class="sm:col-span-4">
-            <label for="username" class="block text-xl font-medium leading-6 text-gray-900">IdAkun</label>
-            <div class="mt-2">
-                <div class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                <input type="text" name="idAkun" id="idAkun"  class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6">
-                </div>
-            </div>
-            </div>
-        </div>
     </div>
     <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
         <div class="sm:col-span-4">
@@ -50,7 +39,7 @@
           </div>
         </div>  
   <div class="mt-6 flex items-center  gap-x-6">
-    <button type="submit" class="text-sm font-semibold leading-6 mt-2 bg-[#262626] rounded p-1 w-full text-white">Pesan</button>
+    <button type="submit" class="text-sm font-semibold leading-6 mt-2 bg-[#262626] rounded p-1 w-full text-white w-32">Pesan</button>
   </div>
   <input type="hidden" value=<?= $mobil['id']?> name="id">
   <input type="hidden" value=<?= $mobil['harga']?> name="harga">
