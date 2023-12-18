@@ -39,10 +39,10 @@ class Pesan extends BaseController
             return redirect()->to('/');
         }
 
-        $curl = curl_init(getenv('api.pabrik.key') . 'api/mobil/' . $id);
+        $curl = curl_init(getenv('api_pabrik_key') . 'api/mobil/' . $id);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_HTTPHEADER, [
-            'Authorization: Bearer ' . getenv('api.key')
+            'Authorization: Bearer ' . getenv('api_key')
         ]);
         $response = curl_exec($curl);
         curl_close($curl);
@@ -90,12 +90,12 @@ class Pesan extends BaseController
             'jumlah' => $jumlahMobil,
         ];
 
-        $curl = curl_init(getenv('api.pabrik.key') . '/api/order');
+        $curl = curl_init(getenv('api_pabrik_key') . '/api/order');
         curl_setopt($curl, CURLOPT_POST, 1);
         curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_HTTPHEADER, [
-            'Authorization: Bearer ' . getenv('api.key')
+            'Authorization: Bearer ' . getenv('api_key')
         ]);
         $response = curl_exec($curl);
         
