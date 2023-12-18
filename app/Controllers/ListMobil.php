@@ -42,10 +42,10 @@ class Listmobil extends BaseController
 
     public function getDataMobil($id = null)
     {
-        $curl = curl_init(($id) ? getenv('api.pabrik.key') . 'api/mobil/' . $id : getenv('api.pabrik.key') . 'api/mobil');
+        $curl = curl_init(($id) ? getenv('api_pabrik_key') . 'api/mobil/' . $id : getenv('api_pabrik_key') . 'api/mobil');
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_HTTPHEADER, [
-            'Authorization: Bearer ' . getenv('api.key')
+            'Authorization: Bearer ' . getenv('api_key')
         ]);
         $response = curl_exec($curl);
         curl_close($curl);
