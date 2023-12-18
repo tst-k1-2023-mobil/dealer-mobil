@@ -12,7 +12,7 @@ $routes->post('/logout', 'Login::logout');
 $routes->get('/register', 'Register::index');
 $routes->post('/register/auth', 'Register::auth');
 
-$routes->get('/', 'ListMobil::index');
+$routes->get('/', 'Listmobil::index');
 $routes->post('/listmobil', 'Listmobil::detailPesanan');
 
 $routes->get('/pesan/(:segment)', 'Pesan::formPemesanan/$1');

@@ -20,26 +20,24 @@ CI_ENVIRONMENT = production
 # APP
 #--------------------------------------------------------------------
 
-# app.baseURL = ''
-# If you have trouble with `.`, you could also use `_`.
-# app_baseURL = ''
-# app.forceGlobalSecureRequests = false
-# app.CSPEnabled = false
+app_baseURL = 'http://localhost:8080'
+app_indexPage = ''
+app_port = 8080
 
 #--------------------------------------------------------------------
 # DATABASE
 #--------------------------------------------------------------------
 
-database.default.hostname = localhost
-database.default.database = dealer
-database.default.username = root
-database.default.password = 
-database.default.DBDriver = MySQLi
-database.default.DBPrefix =
-database.default.port = 3306
+database_default_hostname = localhost
+database_default_database = dealer
+database_default_username = test
+database_default_password = 1234
+database_default_DBDriver = MySQLi
+database_default_DBPrefix =
+database_default_port = 3306
 
 #--------------------------------------------------------------------
 # API PABRIK
 #--------------------------------------------------------------------
-api_pabrik_key = http://localhost:8084/
-api_key = 
+api_pabrik_key = https://localhost/
+api_key = 1234

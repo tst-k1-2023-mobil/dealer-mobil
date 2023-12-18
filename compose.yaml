@@ -1,0 +1,45 @@
+version: "3.9"
+name: tst-dealer-mobil
+services:
+    proxy:
+        container_name: nginx-proxy-dealer
+        restart: unless-stopped
+        build:
+          context: .
+          dockerfile: ./docker/dockerfile-nginx
+        ports:
+            - "${app_port}:80"
+        env_file:
+            - .env
+        links:
+            - server
+
+    server:
+        container_name: php-fpm-server-dealer
+        restart: unless-stopped
+        build:
+            context: .
+            dockerfile: ./docker/dockerfile-php
+        environment:
+            - database_default_hostname=db
+        env_file:
+            - .env
+        links:
+            - db
+    
+    db:
+        container_name: mysql-server-dealer
+        restart: unless-stopped
+        build:
+            context: .
+            dockerfile: ./docker/dockerfile-mysql
+        environment:
+            - MYSQL_ROOT_PASSWORD=${database_default_password}
+            - MYSQL_USER=${database_default_username}
+            - MYSQL_PASSWORD=${database_default_password}
+            - MYSQL_DATABASE=${database_default_database}
+        volumes:
+            - tst-dealer-db:/var/lib/mysql
+volumes:
+    tst-dealer-db:
+        
