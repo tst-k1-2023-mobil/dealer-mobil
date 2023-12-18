@@ -41,5 +41,5 @@ database.default.port = 3306
 #--------------------------------------------------------------------
 # API PABRIK
 #--------------------------------------------------------------------
-api.pabrik.key = 'http://localhost:8084/'
-api.key = '123425890apiKeyyuHuo8saycx'
+api_pabrik_key = http://localhost:8084/
+api_key = 

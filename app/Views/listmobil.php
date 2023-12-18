@@ -31,7 +31,7 @@
                             <p class="mt-1 truncate text-xs leading-5 text-gray-900"><?= $m['spesifikasi'] ?></p>
                             <p class="mt-1 text-xs leading-5 text-gray-900"><?= $m['stok'] ?></p>
                             <p class="mt-1 text-xs leading-5 text-gray-900"><?= $m['waktuProduksi'] ?> hari </p>
-                            <?php if ($role == '0') : ?>
+                            <?php if ($role == '0' && $diskon != 0) : ?>
                             <div class="flex gap-2">
                                 <p class="mt-1 text-xs leading-5 text-gray-400 line-through decoration-gray-900">Rp<?= number_format($m['harga'], 0, ',', '.') ?></p>
                                 <p class="mt-1 text-xs leading-5 text-gray-900">Rp<?= number_format($m['harga'] * (1 - $diskon), 0, ',', '.') ?></p>
