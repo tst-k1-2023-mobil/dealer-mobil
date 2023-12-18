@@ -1,0 +1,4 @@
+#!/bin/bash
+mysql -uroot -p$MYSQL_ROOT_PASSWORD <<MYSQL
+    GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%';
+MYSQL
