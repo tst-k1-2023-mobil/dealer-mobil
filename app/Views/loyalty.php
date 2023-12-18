@@ -41,7 +41,7 @@
 
     <!-- current spending -->
     <div class="mt-10">
-        <h2 class="text-4xl font-bold mb-4">Current Spending</h2>
+        <h2 class="text-4xl font-bold mb-4">Total Pengeluaran</h2>
 
         <?php
         $loyaltyLevels = [
@@ -68,10 +68,10 @@
 
         <div class="flex justify-between items-center rounded-md mb-2" style="background-color: <?= ($currentLevel === 'Bronze') ? '#CD7F32' : (($currentLevel === 'Silver') ? '#C0C0C0' : (($currentLevel === 'Gold') ? '#d4af37' : '#b4b4b4')) ?>; padding: 1rem;">
             <p class="text-xl font-bold text-white"><?= $currentLevel ?></p>
-            <p class="text-white">Your current spending : <span class="font-bold">Rp<?= number_format($spending, 0, ',', '.') ?>,-</span></p>
+            <p class="text-white">Total Pengeluaran Anda : <span class="font-bold">Rp<?= number_format($spending, 0, ',', '.') ?>,-</span></p>
         </div>
         <?php if ($nextLevel !== '') : ?>
-            <p class="text-black">Spend <span class="font-bold">Rp<?= number_format($remainingToNextLevel, 0, ',', '.') ?></span> more to reach <?= $nextLevel ?></p>
+            <p class="text-black">Belanja <span class="font-bold">Rp<?= number_format($remainingToNextLevel, 0, ',', '.') ?></span> lagi untuk mencapai level <?= $nextLevel ?></p>
         <?php endif; ?>
     </div>
 </div>
