@@ -11,7 +11,7 @@ class Register extends BaseController
         }
 
         $data = [
-            'title' => 'Register',
+            'title' => 'Register | Dealer.in',
             'validation' => \Config\Services::validation()
         ];
 

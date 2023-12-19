@@ -11,7 +11,7 @@ class Login extends BaseController
         }
 
         $data = [
-            'title' => 'Login',
+            'title' => 'Login | Dealer.in',
             'validation' => \Config\Services::validation()
         ];
         return view('login', $data);
