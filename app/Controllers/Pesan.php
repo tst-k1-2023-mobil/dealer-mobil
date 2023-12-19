@@ -52,7 +52,8 @@ class Pesan extends BaseController
 
         $data = [
             'mobil' => json_decode($response, true),
-            'diskon' => $loyalitasmodel->getDiskon($usermodel->getLoyalty($this->session->get('user')['id'])['loyalitasId'])
+            'diskon' => $loyalitasmodel->getDiskon($usermodel->getLoyalty($this->session->get('user')['id'])['loyalitasId']),
+            'title' => 'Pesan | Dealer.in'
         ];
 
         return view('pesan', $data);
@@ -171,7 +172,8 @@ class Pesan extends BaseController
         }
 
         $data = [
-            'transaksi' => $transaksiData
+            'transaksi' => $transaksiData,
+            'title' => 'Transaksi | Dealer.in'
         ];
 
         return view('transaksi', $data);

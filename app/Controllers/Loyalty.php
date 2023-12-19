@@ -20,7 +20,8 @@ class Loyalty extends BaseController
         $spending = $usermodel->getSpendingUser($this->session->get('user')['id']);
         
         $data = [
-            'spending' => $spending['totalSpending']
+            'spending' => $spending['totalSpending'],
+            'title' => 'Loyalty | Dealer.in'
         ];
         return view('loyalty', $data);
     }

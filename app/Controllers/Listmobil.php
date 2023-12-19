@@ -24,7 +24,8 @@ class Listmobil extends BaseController
         $data = [
             'mobil' => $response,
             'role' => $role,
-            'diskon' => $diskon
+            'diskon' => $diskon,
+            'title' => 'List Mobil | Dealer.in'
         ];
         return view('listmobil', $data);
     }
